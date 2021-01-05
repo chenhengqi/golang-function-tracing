@@ -26,8 +26,10 @@ const (
 	Complex64
 	Complex128
 	Ptr
+	Map
 	Chan
 	Array
+	Error
 	Slice
 	Struct
 	Interface
