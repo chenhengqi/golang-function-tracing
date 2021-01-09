@@ -10,6 +10,7 @@ type Parser struct {
 	tokenizer *Tokenizer
 	token     Token
 	literal   string
+	args      []Arg
 }
 
 // NewParser creates a new parser
@@ -39,6 +40,7 @@ func (p *Parser) next() {
 	if err != nil {
 		if err == io.EOF {
 			p.token = None
+			p.literal = ""
 			return
 		}
 		panic(err)
@@ -48,9 +50,27 @@ func (p *Parser) next() {
 }
 
 func (p *Parser) parseArgs() {
-
+	for {
+		p.next()
+		switch p.token {
+		case RightParenthesis:
+			return
+		case Comma:
+			p.next()
+			p.parseArg()
+		default:
+			p.parseArg()
+		}
+	}
 }
 
 func (p *Parser) parseArg() {
 
+}
+
+func (p *Parser) expect(token Token) {
+	p.next()
+	if p.token != token {
+		panic(fmt.Sprintf("expect %+v, got %+v", token, p.token))
+	}
 }
