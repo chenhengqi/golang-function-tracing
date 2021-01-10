@@ -10,7 +10,7 @@ type Parser struct {
 	tokenizer *Tokenizer
 	token     Token
 	literal   string
-	args      []Arg
+	args      Args
 }
 
 // NewParser creates a new parser
@@ -57,15 +57,44 @@ func (p *Parser) parseArgs() {
 			return
 		case Comma:
 			p.next()
-			p.parseArg()
+			typeSpec := p.parseArg()
+			p.args.Append(&Arg{typeSpec})
 		default:
-			p.parseArg()
+			typeSpec := p.parseArg()
+			p.args.Append(&Arg{typeSpec})
 		}
 	}
 }
 
-func (p *Parser) parseArg() {
-
+func (p *Parser) parseArg() *TypeSpec {
+	typeSpec := &TypeSpec{}
+	switch p.token {
+	case Bool, String, Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32, Uint64, Uintptr, Byte, Rune, Float32, Float64, Complex64, Complex128:
+		typeSpec.isPrimitive = true
+	case Asterisk:
+		typeSpec.isPointer = true
+		p.next()
+		typeSpec.inner = p.parseArg()
+	case Chan:
+		typeSpec.isChan = true
+		p.next()
+		typeSpec.inner = p.parseArg()
+	case Error:
+		typeSpec.isError = true
+	case Interface:
+		typeSpec.isInterface = true
+	case Map:
+		// TODO
+	case Array:
+		// TODO
+	case Slice:
+		// TODO
+	case Struct:
+		// TODO
+	default:
+		panic("not implemented")
+	}
+	return typeSpec
 }
 
 func (p *Parser) expect(token Token) {
