@@ -84,10 +84,12 @@ func (p *Parser) parseArg() *TypeSpec {
 	case Interface:
 		typeSpec.isInterface = true
 	case Map:
-		// TODO
-	case Array:
-		// TODO
-	case Slice:
+		// map[string]int
+		p.expect(LeftSquareBracket)
+		typeSpec.key = p.parseArg()
+		p.expect(RightSquareBracket)
+		typeSpec.value = p.parseArg()
+	case LeftSquareBracket: // Array or Slice
 		// TODO
 	case Struct:
 		// TODO

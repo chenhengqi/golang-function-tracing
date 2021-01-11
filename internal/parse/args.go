@@ -22,6 +22,8 @@ type TypeSpec struct {
 	isStruct    bool
 	isInterface bool
 	inner       *TypeSpec
+	key         *TypeSpec
+	value       *TypeSpec
 	token       Token
 }
 
