@@ -3,6 +3,7 @@ package parse
 import (
 	"fmt"
 	"io"
+	"strconv"
 )
 
 // Parser is used to parse function arguments
@@ -90,7 +91,26 @@ func (p *Parser) parseArg() *TypeSpec {
 		p.expect(RightSquareBracket)
 		typeSpec.value = p.parseArg()
 	case LeftSquareBracket: // Array or Slice
-		// TODO
+		// [16]int, []int
+		p.next()
+		switch p.token {
+		case RightSquareBracket:
+			typeSpec.isSlice = true
+			p.next()
+			typeSpec.inner = p.parseArg()
+		case Number:
+			d, err := strconv.ParseInt(p.literal, 10, 64)
+			if err != nil {
+				panic(err)
+			}
+			typeSpec.isArray = true
+			typeSpec.dimension = int(d)
+			p.expect(RightSquareBracket)
+			p.next()
+			typeSpec.inner = p.parseArg()
+		default:
+			panic("unexpected token after `[`")
+		}
 	case Struct:
 		// TODO
 	default:

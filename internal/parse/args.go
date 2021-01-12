@@ -21,9 +21,10 @@ type TypeSpec struct {
 	isError     bool
 	isStruct    bool
 	isInterface bool
-	inner       *TypeSpec
-	key         *TypeSpec
-	value       *TypeSpec
+	inner       *TypeSpec // for chan, array, slice
+	key         *TypeSpec // for map
+	value       *TypeSpec // for map
+	dimension   int       // for array
 	token       Token
 }
 
