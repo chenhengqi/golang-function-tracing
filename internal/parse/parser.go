@@ -112,7 +112,22 @@ func (p *Parser) parseArg() *TypeSpec {
 			panic("unexpected token after `[`")
 		}
 	case Struct:
-		// TODO
+		// struct {string, int, int}
+		p.expect(LeftBrace)
+		for {
+			p.next()
+			switch p.token {
+			case RightBrace:
+				break
+			case Comma:
+				p.next()
+				field := p.parseArg()
+				typeSpec.fields = append(typeSpec.fields, field)
+			default:
+				field := p.parseArg()
+				typeSpec.fields = append(typeSpec.fields, field)
+			}
+		}
 	default:
 		panic("not implemented")
 	}
