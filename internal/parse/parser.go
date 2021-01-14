@@ -22,12 +22,12 @@ func NewParser(src []byte) *Parser {
 }
 
 // Parse parses function arguments
-func (p *Parser) Parse() {
+func (p *Parser) Parse() Args {
 	for {
 		p.next()
 		switch p.token {
 		case None:
-			return
+			return p.args
 		case LeftParenthesis:
 			p.parseArgs()
 		default:
