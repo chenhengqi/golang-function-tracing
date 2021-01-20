@@ -92,7 +92,8 @@ func (t *Tokenizer) readSymbol() (Token, string, error) {
 	sym := bytes.NewBuffer(nil)
 	for t.index < len(t.src) {
 		if ('a' <= t.src[t.index] && t.src[t.index] <= 'z') ||
-			('A' <= t.src[t.index] && t.src[t.index] <= 'Z') {
+			('A' <= t.src[t.index] && t.src[t.index] <= 'Z') ||
+			('0' <= t.src[t.index] && t.src[t.index] <= '9') {
 			sym.WriteByte(t.src[t.index])
 			t.index++
 		} else {
