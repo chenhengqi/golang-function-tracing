@@ -66,7 +66,9 @@ var stringToToken = map[string]Token{
 	"float64":    Float64,
 	"complex64":  Complex64,
 	"complex128": Complex128,
+	"map":        Map,
 	"chan":       Chan,
+	"error":      Error,
 	"struct":     Struct,
 	"interface":  Interface,
 }
