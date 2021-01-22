@@ -19,3 +19,12 @@ func TestParsePrimitive(t *testing.T) {
 		t.Fatalf("expect 19 arguments, got %d", len(args.args))
 	}
 }
+
+func TestParseComplex(t *testing.T) {
+	src := "(*struct{int, string}, map[string]int, chan int, [8]int8, []int16, error, interface, struct{uint, uint8, uint16, uint32, uint64, uintptr, byte, rune, float32, float64, complex64, complex128})"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+	if len(args.args) != 19 {
+		t.Fatalf("expect 19 arguments, got %d", len(args.args))
+	}
+}
