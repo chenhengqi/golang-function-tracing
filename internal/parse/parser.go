@@ -87,8 +87,10 @@ func (p *Parser) parseArg() *TypeSpec {
 	case Map:
 		// map[string]int
 		p.expect(LeftSquareBracket)
+		p.next()
 		typeSpec.key = p.parseArg()
 		p.expect(RightSquareBracket)
+		p.next()
 		typeSpec.value = p.parseArg()
 	case LeftSquareBracket: // Array or Slice
 		// [16]int, []int
@@ -114,11 +116,12 @@ func (p *Parser) parseArg() *TypeSpec {
 	case Struct:
 		// struct {string, int, int}
 		p.expect(LeftBrace)
+	parseStructFields:
 		for {
 			p.next()
 			switch p.token {
 			case RightBrace:
-				break
+				break parseStructFields
 			case Comma:
 				p.next()
 				field := p.parseArg()
