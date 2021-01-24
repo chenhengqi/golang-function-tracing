@@ -72,6 +72,7 @@ func (p *Parser) parseArg() *TypeSpec {
 	switch p.token {
 	case Bool, String, Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32, Uint64, Uintptr, Byte, Rune, Float32, Float64, Complex64, Complex128:
 		typeSpec.isPrimitive = true
+		typeSpec.token = p.token
 	case Asterisk:
 		typeSpec.isPointer = true
 		p.next()
@@ -86,6 +87,7 @@ func (p *Parser) parseArg() *TypeSpec {
 		typeSpec.isInterface = true
 	case Map:
 		// map[string]int
+		typeSpec.isMap = true
 		p.expect(LeftSquareBracket)
 		p.next()
 		typeSpec.key = p.parseArg()
@@ -115,6 +117,7 @@ func (p *Parser) parseArg() *TypeSpec {
 		}
 	case Struct:
 		// struct {string, int, int}
+		typeSpec.isStruct = true
 		p.expect(LeftBrace)
 	parseStructFields:
 		for {
