@@ -72,3 +72,35 @@ var stringToToken = map[string]Token{
 	"struct":     Struct,
 	"interface":  Interface,
 }
+
+var tokenToString = map[Token]string{
+	Bool:       "bool",
+	String:     "string",
+	Int:        "int",
+	Int8:       "int8",
+	Int16:      "int16",
+	Int32:      "int32",
+	Int64:      "int64",
+	Uint:       "uint",
+	Uint8:      "uint8",
+	Uint16:     "uint16",
+	Uint32:     "uint32",
+	Uint64:     "uint64",
+	Uintptr:    "uintptr",
+	Byte:       "byte",
+	Rune:       "rune",
+	Float32:    "float32",
+	Float64:    "float64",
+	Complex64:  "complex64",
+	Complex128: "complex128",
+	Map:        "map",
+	Chan:       "chan",
+	Error:      "error",
+	Struct:     "struct",
+	Interface:  "interface",
+}
+
+// String implements the Stringer interface
+func (t Token) String() string {
+	return tokenToString[t]
+}
