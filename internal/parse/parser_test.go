@@ -9,6 +9,7 @@ func TestParse(t *testing.T) {
 	if len(args.args) != 2 {
 		t.Fatalf("expect 2 arguments, got %d", len(args.args))
 	}
+	t.Log(args.String())
 }
 
 func TestParsePrimitive(t *testing.T) {
@@ -18,6 +19,7 @@ func TestParsePrimitive(t *testing.T) {
 	if len(args.args) != 19 {
 		t.Fatalf("expect 19 arguments, got %d", len(args.args))
 	}
+	t.Log(args.String())
 }
 
 func TestParseComplex(t *testing.T) {
@@ -27,4 +29,5 @@ func TestParseComplex(t *testing.T) {
 	if len(args.args) != 8 {
 		t.Fatalf("expect 8 arguments, got %d", len(args.args))
 	}
+	t.Log(args.String())
 }
