@@ -95,3 +95,85 @@ func (t *TypeSpec) String() string {
 	}
 	return ""
 }
+
+// Alignment returns the alignment of the type in bytes
+func (t *TypeSpec) Alignment() int {
+	if t.isPrimitive {
+		switch t.token {
+		case Bool:
+			return 1
+		case String:
+			return 8
+		case Int:
+			return 8
+		case Int8:
+			return 1
+		case Int16:
+			return 2
+		case Int32:
+			return 4
+		case Int64:
+			return 8
+		case Uint:
+			return 8
+		case Uint8:
+			return 1
+		case Uint16:
+			return 2
+		case Uint32:
+			return 4
+		case Uint64:
+			return 8
+		case Uintptr:
+			return 8
+		case Byte:
+			return 1
+		case Rune:
+			return 4
+		case Float32:
+			return 4
+		case Float64:
+			return 8
+		case Complex64:
+			return 4
+		case Complex128:
+			return 8
+		default:
+			panic("NOT primitive type")
+		}
+	}
+	if t.isError {
+		return 8
+	}
+	if t.isInterface {
+		return 8
+	}
+	if t.isArray {
+		return 8
+	}
+	if t.isSlice {
+		return 8
+	}
+	if t.isMap {
+		return 8
+	}
+	if t.isChan {
+		return 8
+	}
+	if t.isPointer {
+		return 8
+	}
+	if t.isStruct {
+		if len(t.fields) == 0 {
+			return 1
+		}
+		alignment := 1
+		for _, field := range t.fields {
+			if alignment < field.Alignment() {
+				alignment = field.Alignment()
+			}
+		}
+		return alignment
+	}
+	panic("not implemented")
+}
