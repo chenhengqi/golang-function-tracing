@@ -124,3 +124,81 @@ func TestPrimitiveAlignment(t *testing.T) {
 		t.Fatalf("%T alignment expect %d, got %d", c128, alignment, unsafe.Alignof(c128))
 	}
 }
+
+func TestErrorAlignment(t *testing.T) {
+	src := "(error)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var err error
+	if uintptr(alignment) != unsafe.Alignof(err) {
+		t.Fatalf("%T alignment expect %d, got %d", err, alignment, unsafe.Alignof(err))
+	}
+}
+
+func TestInterfaceAlignment(t *testing.T) {
+	src := "(interface)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var iface interface{}
+	if uintptr(alignment) != unsafe.Alignof(iface) {
+		t.Fatalf("%T alignment expect %d, got %d", iface, alignment, unsafe.Alignof(iface))
+	}
+}
+
+func TestArrayAlignment(t *testing.T) {
+	src := "([8]int, [16]struct{string})"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var arr [18]int
+	if uintptr(alignment) != unsafe.Alignof(arr) {
+		t.Fatalf("%T alignment expect %d, got %d", arr, alignment, unsafe.Alignof(arr))
+	}
+
+	alignment = args.args[1].typeSpec.Alignment()
+	var arr2 [18]struct{ s string }
+	if uintptr(alignment) != unsafe.Alignof(arr2) {
+		t.Fatalf("%T alignment expect %d, got %d", arr2, alignment, unsafe.Alignof(arr2))
+	}
+}
+
+func TestSliceAlignment(t *testing.T) {
+	src := "(interface)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var iface interface{}
+	if uintptr(alignment) != unsafe.Alignof(iface) {
+		t.Fatalf("%T alignment expect %d, got %d", iface, alignment, unsafe.Alignof(iface))
+	}
+}
+
+func TestMapAlignment(t *testing.T) {
+	src := "(interface)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var iface interface{}
+	if uintptr(alignment) != unsafe.Alignof(iface) {
+		t.Fatalf("%T alignment expect %d, got %d", iface, alignment, unsafe.Alignof(iface))
+	}
+}
+
+func TestChanAlignment(t *testing.T) {
+	src := "(interface)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var iface interface{}
+	if uintptr(alignment) != unsafe.Alignof(iface) {
+		t.Fatalf("%T alignment expect %d, got %d", iface, alignment, unsafe.Alignof(iface))
+	}
+}
