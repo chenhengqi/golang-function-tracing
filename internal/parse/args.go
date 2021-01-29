@@ -149,7 +149,7 @@ func (t *TypeSpec) Alignment() int {
 		return 8
 	}
 	if t.isArray {
-		return 8
+		return t.inner.Alignment()
 	}
 	if t.isSlice {
 		return 8
