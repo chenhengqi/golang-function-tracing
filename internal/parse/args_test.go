@@ -277,3 +277,56 @@ func TestChanAlignment(t *testing.T) {
 		t.Fatalf("%T alignment expect %d, got %d", ch3, alignment, unsafe.Alignof(ch3))
 	}
 }
+
+func TestPointerAlignment(t *testing.T) {
+	src := "(*int, *string, *struct{})"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var p0 *int
+	if uintptr(alignment) != unsafe.Alignof(p0) {
+		t.Fatalf("%T alignment expect %d, got %d", p0, alignment, unsafe.Alignof(p0))
+	}
+
+	alignment = args.args[1].typeSpec.Alignment()
+	var p1 *string
+	if uintptr(alignment) != unsafe.Alignof(p1) {
+		t.Fatalf("%T alignment expect %d, got %d", p1, alignment, unsafe.Alignof(p1))
+	}
+
+	alignment = args.args[2].typeSpec.Alignment()
+	var p2 *struct{}
+	if uintptr(alignment) != unsafe.Alignof(p2) {
+		t.Fatalf("%T alignment expect %d, got %d", p2, alignment, unsafe.Alignof(p2))
+	}
+}
+
+func TestStructAlignment(t *testing.T) {
+	src := "(struct{}, struct{int, string}, struct{chan int})"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	alignment := args.args[0].typeSpec.Alignment()
+	var s0 struct{}
+	if uintptr(alignment) != unsafe.Alignof(s0) {
+		t.Fatalf("%T alignment expect %d, got %d", s0, alignment, unsafe.Alignof(s0))
+	}
+
+	alignment = args.args[1].typeSpec.Alignment()
+	var s1 struct {
+		i int
+		s string
+	}
+	if uintptr(alignment) != unsafe.Alignof(s1) {
+		t.Fatalf("%T alignment expect %d, got %d", s1, alignment, unsafe.Alignof(s1))
+	}
+
+	alignment = args.args[2].typeSpec.Alignment()
+	var s2 struct {
+		ch chan int
+	}
+	if uintptr(alignment) != unsafe.Alignof(s2) {
+		t.Fatalf("%T alignment expect %d, got %d", s2, alignment, unsafe.Alignof(s2))
+	}
+}
