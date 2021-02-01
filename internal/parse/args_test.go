@@ -330,3 +330,123 @@ func TestStructAlignment(t *testing.T) {
 		t.Fatalf("%T alignment expect %d, got %d", s2, alignment, unsafe.Alignof(s2))
 	}
 }
+
+func TestPrimitiveSize(t *testing.T) {
+	src := "(bool, string, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, uintptr, byte, rune, float32, float64, complex64, complex128)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var b bool
+	if uintptr(size) != unsafe.Sizeof(b) {
+		t.Fatalf("%T size expect %d, got %d", b, size, unsafe.Sizeof(b))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var s string
+	if uintptr(size) != unsafe.Sizeof(s) {
+		t.Fatalf("%T size expect %d, got %d", s, size, unsafe.Sizeof(s))
+	}
+
+	size = args.args[2].typeSpec.Size()
+	var i int
+	if uintptr(size) != unsafe.Sizeof(i) {
+		t.Fatalf("%T size expect %d, got %d", i, size, unsafe.Sizeof(i))
+	}
+
+	size = args.args[3].typeSpec.Size()
+	var i8 int8
+	if uintptr(size) != unsafe.Sizeof(i8) {
+		t.Fatalf("%T size expect %d, got %d", i8, size, unsafe.Sizeof(i8))
+	}
+
+	size = args.args[4].typeSpec.Size()
+	var i16 int16
+	if uintptr(size) != unsafe.Sizeof(i16) {
+		t.Fatalf("%T size expect %d, got %d", i16, size, unsafe.Sizeof(i16))
+	}
+
+	size = args.args[5].typeSpec.Size()
+	var i32 int32
+	if uintptr(size) != unsafe.Sizeof(i32) {
+		t.Fatalf("%T size expect %d, got %d", i32, size, unsafe.Sizeof(i32))
+	}
+
+	size = args.args[6].typeSpec.Size()
+	var i64 int64
+	if uintptr(size) != unsafe.Sizeof(i64) {
+		t.Fatalf("%T size expect %d, got %d", i64, size, unsafe.Sizeof(i64))
+	}
+
+	size = args.args[7].typeSpec.Size()
+	var u uint
+	if uintptr(size) != unsafe.Sizeof(u) {
+		t.Fatalf("%T size expect %d, got %d", u, size, unsafe.Sizeof(u))
+	}
+
+	size = args.args[8].typeSpec.Size()
+	var u8 uint8
+	if uintptr(size) != unsafe.Sizeof(u8) {
+		t.Fatalf("%T size expect %d, got %d", u8, size, unsafe.Sizeof(u8))
+	}
+
+	size = args.args[9].typeSpec.Size()
+	var u16 uint16
+	if uintptr(size) != unsafe.Sizeof(u16) {
+		t.Fatalf("%T size expect %d, got %d", u16, size, unsafe.Sizeof(u16))
+	}
+
+	size = args.args[10].typeSpec.Size()
+	var u32 uint32
+	if uintptr(size) != unsafe.Sizeof(u32) {
+		t.Fatalf("%T size expect %d, got %d", u32, size, unsafe.Sizeof(u32))
+	}
+
+	size = args.args[11].typeSpec.Size()
+	var u64 uint64
+	if uintptr(size) != unsafe.Sizeof(u64) {
+		t.Fatalf("%T size expect %d, got %d", u64, size, unsafe.Sizeof(u64))
+	}
+
+	size = args.args[12].typeSpec.Size()
+	var p uintptr
+	if uintptr(size) != unsafe.Sizeof(p) {
+		t.Fatalf("%T size expect %d, got %d", p, size, unsafe.Sizeof(p))
+	}
+
+	size = args.args[13].typeSpec.Size()
+	var octet byte
+	if uintptr(size) != unsafe.Sizeof(octet) {
+		t.Fatalf("%T size expect %d, got %d", octet, size, unsafe.Sizeof(octet))
+	}
+
+	size = args.args[14].typeSpec.Size()
+	var r rune
+	if uintptr(size) != unsafe.Sizeof(r) {
+		t.Fatalf("%T size expect %d, got %d", r, size, unsafe.Sizeof(r))
+	}
+
+	size = args.args[15].typeSpec.Size()
+	var f32 float32
+	if uintptr(size) != unsafe.Sizeof(f32) {
+		t.Fatalf("%T size expect %d, got %d", f32, size, unsafe.Sizeof(f32))
+	}
+
+	size = args.args[16].typeSpec.Size()
+	var f64 float64
+	if uintptr(size) != unsafe.Sizeof(f64) {
+		t.Fatalf("%T size expect %d, got %d", f64, size, unsafe.Sizeof(f64))
+	}
+
+	size = args.args[17].typeSpec.Size()
+	var c64 complex64
+	if uintptr(size) != unsafe.Sizeof(c64) {
+		t.Fatalf("%T size expect %d, got %d", c64, size, unsafe.Sizeof(c64))
+	}
+
+	size = args.args[18].typeSpec.Size()
+	var c128 complex128
+	if uintptr(size) != unsafe.Sizeof(c128) {
+		t.Fatalf("%T size expect %d, got %d", c128, size, unsafe.Sizeof(c128))
+	}
+}
