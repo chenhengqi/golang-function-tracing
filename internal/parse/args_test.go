@@ -450,3 +450,27 @@ func TestPrimitiveSize(t *testing.T) {
 		t.Fatalf("%T size expect %d, got %d", c128, size, unsafe.Sizeof(c128))
 	}
 }
+
+func TestErrorSize(t *testing.T) {
+	src := "(error)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var err error
+	if uintptr(size) != unsafe.Sizeof(err) {
+		t.Fatalf("%T size expect %d, got %d", err, size, unsafe.Sizeof(err))
+	}
+}
+
+func TestInterfaceSize(t *testing.T) {
+	src := "(interface)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var iface interface{}
+	if uintptr(size) != unsafe.Sizeof(iface) {
+		t.Fatalf("%T size expect %d, got %d", iface, size, unsafe.Sizeof(iface))
+	}
+}
