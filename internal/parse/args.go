@@ -225,10 +225,10 @@ func (t *TypeSpec) Size() int {
 		}
 	}
 	if t.isError {
-		return 8
+		return 16
 	}
 	if t.isInterface {
-		return 8
+		return 16
 	}
 	if t.isArray {
 		return t.inner.Size() * t.dimension
