@@ -474,3 +474,93 @@ func TestInterfaceSize(t *testing.T) {
 		t.Fatalf("%T size expect %d, got %d", iface, size, unsafe.Sizeof(iface))
 	}
 }
+
+func TestArraySize(t *testing.T) {
+	src := "([5]byte, [8]int, [16]string)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var arr0 [5]byte
+	if uintptr(size) != unsafe.Sizeof(arr0) {
+		t.Fatalf("%T size expect %d, got %d", arr0, size, unsafe.Sizeof(arr0))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var arr1 [8]int
+	if uintptr(size) != unsafe.Sizeof(arr1) {
+		t.Fatalf("%T size expect %d, got %d", arr1, size, unsafe.Sizeof(arr1))
+	}
+
+	size = args.args[2].typeSpec.Size()
+	var arr2 [16]string
+	if uintptr(size) != unsafe.Sizeof(arr2) {
+		t.Fatalf("%T size expect %d, got %d", arr2, size, unsafe.Sizeof(arr2))
+	}
+}
+
+func TestSliceSize(t *testing.T) {
+	src := "([]byte, []int, []string)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var s0 []byte
+	if uintptr(size) != unsafe.Sizeof(s0) {
+		t.Fatalf("%T size expect %d, got %d", s0, size, unsafe.Sizeof(s0))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var s1 []int
+	if uintptr(size) != unsafe.Sizeof(s1) {
+		t.Fatalf("%T size expect %d, got %d", s1, size, unsafe.Sizeof(s1))
+	}
+
+	size = args.args[2].typeSpec.Size()
+	var s2 []string
+	if uintptr(size) != unsafe.Sizeof(s2) {
+		t.Fatalf("%T size expect %d, got %d", s2, size, unsafe.Sizeof(s2))
+	}
+}
+
+func TestMapSize(t *testing.T) {
+	src := "(map[int]int, map[string]string, map[string]int)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var m0 map[int]int
+	if uintptr(size) != unsafe.Sizeof(m0) {
+		t.Fatalf("%T size expect %d, got %d", m0, size, unsafe.Sizeof(m0))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var m1 map[string]string
+	if uintptr(size) != unsafe.Sizeof(m1) {
+		t.Fatalf("%T size expect %d, got %d", m1, size, unsafe.Sizeof(m1))
+	}
+
+	size = args.args[2].typeSpec.Size()
+	var m2 map[string]int
+	if uintptr(size) != unsafe.Sizeof(m2) {
+		t.Fatalf("%T size expect %d, got %d", m2, size, unsafe.Sizeof(m2))
+	}
+}
+
+func TestChanSize(t *testing.T) {
+	src := "(chan int, chan string)"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var c0 chan int
+	if uintptr(size) != unsafe.Sizeof(c0) {
+		t.Fatalf("%T size expect %d, got %d", c0, size, unsafe.Sizeof(c0))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var c1 chan string
+	if uintptr(size) != unsafe.Sizeof(c1) {
+		t.Fatalf("%T size expect %d, got %d", c1, size, unsafe.Sizeof(c1))
+	}
+}
