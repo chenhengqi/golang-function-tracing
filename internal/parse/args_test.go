@@ -564,3 +564,27 @@ func TestChanSize(t *testing.T) {
 		t.Fatalf("%T size expect %d, got %d", c1, size, unsafe.Sizeof(c1))
 	}
 }
+
+func TestPointerSize(t *testing.T) {
+	src := "(*int, *string, *struct{})"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var p0 *int
+	if uintptr(size) != unsafe.Sizeof(p0) {
+		t.Fatalf("%T size expect %d, got %d", p0, size, unsafe.Sizeof(p0))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var p1 *string
+	if uintptr(size) != unsafe.Sizeof(p1) {
+		t.Fatalf("%T size expect %d, got %d", p1, size, unsafe.Sizeof(p1))
+	}
+
+	size = args.args[2].typeSpec.Size()
+	var p2 *struct{}
+	if uintptr(size) != unsafe.Sizeof(p2) {
+		t.Fatalf("%T size expect %d, got %d", p2, size, unsafe.Sizeof(p2))
+	}
+}
