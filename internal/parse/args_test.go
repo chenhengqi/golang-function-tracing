@@ -588,3 +588,33 @@ func TestPointerSize(t *testing.T) {
 		t.Fatalf("%T size expect %d, got %d", p2, size, unsafe.Sizeof(p2))
 	}
 }
+
+func TestStructSize(t *testing.T) {
+	src := "(struct{}, struct{int, string}, struct{byte, int})"
+	parser := NewParser([]byte(src))
+	args := parser.Parse()
+
+	size := args.args[0].typeSpec.Size()
+	var s0 struct{}
+	if uintptr(size) != unsafe.Sizeof(s0) {
+		t.Fatalf("%T size expect %d, got %d", s0, size, unsafe.Sizeof(s0))
+	}
+
+	size = args.args[1].typeSpec.Size()
+	var s1 struct {
+		i int
+		s string
+	}
+	if uintptr(size) != unsafe.Sizeof(s1) {
+		t.Fatalf("%T size expect %d, got %d", s1, size, unsafe.Sizeof(s1))
+	}
+
+	size = args.args[2].typeSpec.Size()
+	var s2 struct {
+		b byte
+		i int
+	}
+	if uintptr(size) != unsafe.Sizeof(s2) {
+		t.Fatalf("%T size expect %d, got %d", s2, size, unsafe.Sizeof(s2))
+	}
+}
