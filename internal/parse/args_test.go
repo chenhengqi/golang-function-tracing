@@ -590,7 +590,7 @@ func TestPointerSize(t *testing.T) {
 }
 
 func TestStructSize(t *testing.T) {
-	src := "(struct{}, struct{int, string}, struct{byte, int})"
+	src := "(struct{}, struct{int, string}, struct{byte, int}, struct{int, byte})"
 	parser := NewParser([]byte(src))
 	args := parser.Parse()
 
@@ -616,5 +616,14 @@ func TestStructSize(t *testing.T) {
 	}
 	if uintptr(size) != unsafe.Sizeof(s2) {
 		t.Fatalf("%T size expect %d, got %d", s2, unsafe.Sizeof(s2), size)
+	}
+
+	size = args.args[3].typeSpec.Size()
+	var s3 struct {
+		i int
+		b byte
+	}
+	if uintptr(size) != unsafe.Sizeof(s3) {
+		t.Fatalf("%T size expect %d, got %d", s3, unsafe.Sizeof(s3), size)
 	}
 }
