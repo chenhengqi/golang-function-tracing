@@ -247,13 +247,31 @@ func (t *TypeSpec) Size() int {
 	}
 	if t.isStruct {
 		if len(t.fields) == 0 {
-			return 1
+			return 0
 		}
-		size := 0
-		for _, field := range t.fields {
-			size += field.Size()
+
+		align := func(x, a int) int {
+			y := x + a - 1
+			return y - y%a
 		}
-		return size
+
+		max := func(a, b int) int {
+			if a >= b {
+				return a
+			}
+			return b
+		}
+
+		offsets := make([]int, len(t.fields))
+		var offset int
+		for i, field := range t.fields {
+			alignment := field.Alignment()
+			offset = align(offset, alignment)
+			offsets[i] = offset
+			offset += field.Size()
+		}
+		n := len(t.fields)
+		return offsets[n-1] + max(t.fields[n-1].Size(), t.Alignment())
 	}
 	panic("not implemented")
 }
