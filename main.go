@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/chenhengqi/golang-function-tracing/internal/codegen"
 	"github.com/iovisor/gobpf/bcc"
 )
 
@@ -26,6 +27,7 @@ func main() {
 		os.Exit(0)
 	}
 
+	bpfProgram := codegen.Args(functionArguments)
 	bpfModule := bcc.NewModule(bpfProgram, []string{})
 	defer bpfModule.Close()
 

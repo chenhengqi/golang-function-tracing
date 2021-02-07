@@ -5,7 +5,7 @@ const (
 	golangFuncProbe = "golang_func_trace"
 )
 
-const bpfProgram = `
+const bpfProgram0 = `
 #include <uapi/linux/ptrace.h>
 
 struct event {
