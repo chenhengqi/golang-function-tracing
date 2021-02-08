@@ -27,7 +27,11 @@ func main() {
 		os.Exit(0)
 	}
 
-	bpfProgram := codegen.Args(functionArguments)
+	bpfProgram, err := codegen.Args(functionName, functionArguments)
+	if err != nil {
+		panic(err)
+	}
+
 	bpfModule := bcc.NewModule(bpfProgram, []string{})
 	defer bpfModule.Close()
 
