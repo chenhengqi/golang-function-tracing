@@ -30,3 +30,8 @@ func Args(fullFuncName, funcArgs string) (string, error) {
 
 	return "", nil
 }
+
+// ArgsWithReceiver generates a code snippet for the provided arguments
+func ArgsWithReceiver(fullFuncName, funcArgs, receiver string) (string, error) {
+	return "", nil
+}
