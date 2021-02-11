@@ -22,6 +22,11 @@ func TestParseFunctionName(t *testing.T) {
 		if n != len(testcase.parts) {
 			t.Fatalf("function name NOT match, expect %+v, got %+v", testcase.parts, matches)
 		}
+		for i := 0; i < n; i++ {
+			if matches[i] != testcase.parts[i] {
+				t.Fatalf("%s and %s mismatched", matches[i], testcase.parts[i])
+			}
+		}
 	}
 }
 
@@ -44,6 +49,11 @@ func TestParseFunctionNameWithReceiver(t *testing.T) {
 		n := len(matches)
 		if n != len(testcase.parts) {
 			t.Fatalf("function name NOT match, expect %+v, got %+v", testcase.parts, matches)
+		}
+		for i := 0; i < n; i++ {
+			if matches[i] != testcase.parts[i] {
+				t.Fatalf("%s and %s mismatched", matches[i], testcase.parts[i])
+			}
 		}
 	}
 }
