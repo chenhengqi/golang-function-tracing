@@ -6,7 +6,7 @@ import (
 )
 
 var funcNamePattern = regexp.MustCompile(`^(?P<package_name>.*)\.(?P<func_name>[a-zA-Z][a-zA-Z0-9]*)$`)
-var funcNameWithReceiverPattern = regexp.MustCompile(`^(?P<package_name>.*)\.(?P<receiver>\(?\*?[a-zA-Z][a-zA-Z0-9]*\)?)(?P<func_name>\.[a-zA-Z][a-zA-Z0-9]*)$`)
+var funcNameWithReceiverPattern = regexp.MustCompile(`^(?P<package_name>.*)\.(?P<receiver>\(?\*?[a-zA-Z][a-zA-Z0-9]*\)?)\.(?P<func_name>[a-zA-Z][a-zA-Z0-9]*)$`)
 
 var errWrongFunctionName = fmt.Errorf("wrong full qualified function name")
 var errReceiverShouldBePointer = fmt.Errorf("receiver should be pointer")
