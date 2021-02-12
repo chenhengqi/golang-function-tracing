@@ -40,8 +40,12 @@ func TestParseFunctionNameWithReceiver(t *testing.T) {
 			parts:    []string{"main.Foo.Bar", "main", "Foo", "Bar"},
 		},
 		{
-			funcName: "main.(*Foo).bar",
-			parts:    []string{"main.(*Foo).bar", "main", "(*Foo)", "bar"},
+			funcName: "main.(*Foo).Bar",
+			parts:    []string{"main.(*Foo).Bar", "main", "(*Foo)", "Bar"},
+		},
+		{
+			funcName: "example.com/foo/bar.(*Foo).Bar",
+			parts:    []string{"example.com/foo/bar.(*Foo).Bar", "example.com/foo/bar", "(*Foo)", "Bar"},
 		},
 	}
 	for _, testcase := range testcases {
