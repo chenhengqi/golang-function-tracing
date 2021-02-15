@@ -11,9 +11,7 @@ type Arg struct {
 }
 
 // Args represents a function argument list
-type Args struct {
-	args []*Arg
-}
+type Args []*Arg
 
 // TypeSpec defines a type
 type TypeSpec struct {
@@ -34,18 +32,13 @@ type TypeSpec struct {
 	token       Token
 }
 
-// Append appends an argument
-func (a *Args) Append(arg *Arg) {
-	a.args = append(a.args, arg)
-}
-
 // String implements the Stringer interface
-func (a *Args) String() string {
-	if len(a.args) == 0 {
+func (a Args) String() string {
+	if len(a) == 0 {
 		return "()"
 	}
 	buf := bytes.NewBufferString("(\n")
-	for _, arg := range a.args {
+	for _, arg := range a {
 		buf.WriteString("    ")
 		buf.WriteString(arg.typeSpec.String())
 		buf.WriteByte('\n')

@@ -59,10 +59,10 @@ func (p *Parser) parseArgs() {
 		case Comma:
 			p.next()
 			typeSpec := p.parseArg()
-			p.args.Append(&Arg{typeSpec})
+			p.args = append(p.args, &Arg{typeSpec})
 		default:
 			typeSpec := p.parseArg()
-			p.args.Append(&Arg{typeSpec})
+			p.args = append(p.args, &Arg{typeSpec})
 		}
 	}
 }
