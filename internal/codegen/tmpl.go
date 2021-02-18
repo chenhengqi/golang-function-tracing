@@ -11,7 +11,7 @@ type code struct {
 	Funcs    []string
 }
 
-const codeTmpl = `
+const preambleTmpl = `
 {{range $inc := .Includes}}
 {{$inc}}
 {{end}}
@@ -25,13 +25,36 @@ const codeTmpl = `
 {{end}}
 `
 
+const codeTmpl = `
+{{.Preamble}}
+
+BPF_PERF_OUTPUT(output);
+
+struct event {
+{{range $field := .Fields}}
+    {{$field}}
+{{end}}
+};
+
+int golang_func_trace(struct pt_regs *ctx) {
+    struct event ev = {0};
+
+{{range $snippet := .Snippets}}
+    {{$snippet}}
+{{end}}
+
+    output.perf_submit(ctx, &ev, sizeof(ev));
+    return 0;
+}
+`
+
 func preamble() string {
 	c := code{
 		Includes: []string{ptraceHeader},
 		Defs:     []string{stringDef},
 		Funcs:    []string{primitveInspectFunc, ptrInspectFunc, stringInspectFunc},
 	}
-	t := template.Must(template.New("code").Parse(codeTmpl))
+	t := template.Must(template.New("code").Parse(preambleTmpl))
 	buf := bytes.Buffer{}
 	err := t.Execute(&buf, &c)
 	if err != nil {
